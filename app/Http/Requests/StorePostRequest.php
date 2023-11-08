@@ -5,6 +5,16 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @OA\Schema(
+ *   schema="post.storeOrUpdate",
+ *   title="postStore",
+ *   required={"title", "content"},
+ *
+ *     @OA\Property(property="title", type="string", example="My title", description="Заголовок поста"),
+ *     @OA\Property(property="content", type="string", example="Some long text", description="Тело поста")
+ * )
+ */
 class StorePostRequest extends FormRequest
 {
     /**

@@ -11,7 +11,41 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
+     * @OA\Post(
+     *   tags={"Auth"},
+     *   path="/api/login",
+     *   summary="Логин",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       allOf={
+     *         @OA\Schema(
+     *           @OA\Property(
+     *             property="email",
+     *             type="string",
+     *             example="ololo@gmail.com",
+     *             description="логин"
+     *           ),
+     *           @OA\Property(
+     *             property="password",
+     *             type="string",
+     *             example="12345Pic",
+     *             description="пароль"
+     *           )
+     *         )
+     *       }
+     *     )
+     *   ),
+     *   @OA\Response(response=204, description="No Content"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     *
      * Handle an incoming authentication request.
+     *
+     * @param LoginRequest $request
+     *
+     * @return Response
      */
     public function store(LoginRequest $request): Response
     {

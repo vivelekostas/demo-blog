@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,5 +27,23 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+
+    /**
+     * Задаёт ответ 404 по дефолту для контроллеров API, если не найдена запрашиваемая модель.
+     *
+     * @param mixed $request
+     * @param Throwable $e
+     *
+     * @return [type]
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException && $request->wantsJson()) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        return parent::render($request, $e);
     }
 }

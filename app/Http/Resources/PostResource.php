@@ -8,9 +8,28 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PostResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * @OA\Schema(
+     *   schema="resources.post.show",
+     *   title="Post resources",
+     *   description="Post resources",
+     *     @OA\Property(property="id", type="integer", example=1, description="id поста"),
+     *     @OA\Property(property="title", type="string", example="My title", description="Заголовок поста"),
+     *     @OA\Property(property="content", type="string", example="Some long text", description="Тело поста"),
+     *     @OA\Property(property="user_id", type="integer", example=6, description="id автора"),
+     *     @OA\Property(property="comments_count", type="integer", example="0", description="кол-во комментариев"),
+     *     @OA\Property(
+     *       property="comments",
+     *       type="array",
+     *       @OA\Items(ref="#/components/schemas/resources.post.comments")
+     *     ),
+     *     @OA\Property(property="created_at", type="string", format="date-time", example="2023-11-05 06:11", description="дата создания"),
+     *     @OA\Property(property="update_at", type="string", format="date-time", example="2023-11-05 08:22", description="дата обновления"),
+     * )
      *
-     * @return array<string, mixed>
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function toArray(Request $request): array
     {
