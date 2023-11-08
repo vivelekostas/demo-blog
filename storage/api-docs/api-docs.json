@@ -1,0 +1,628 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Demo-Blog",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Логин",
+                "operationId": "bc76a9d52929cab7a147ca7b5c527430",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "description": "логин",
+                                                "type": "string",
+                                                "example": "ololo@gmail.com"
+                                            },
+                                            "password": {
+                                                "description": "пароль",
+                                                "type": "string",
+                                                "example": "12345Pic"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/posts/{post}/comments": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Comment index",
+                "operationId": "fa11c964243f6de4a2deb4f17cbbe12b",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/resources.post.comments"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/posts": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Список",
+                "operationId": "e9eaf7df702a94f4443677bd1a36cfe6",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/resources.post.index"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/meta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Создание",
+                "operationId": "4a657e51a0066c64781851f2fd2651e2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/post.storeOrUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "id поста",
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "title": {
+                                                    "description": "Заголовок поста",
+                                                    "type": "string",
+                                                    "example": "My title"
+                                                },
+                                                "content": {
+                                                    "description": "Тело поста",
+                                                    "type": "string",
+                                                    "example": "Some long text"
+                                                },
+                                                "user_id": {
+                                                    "description": "id автора",
+                                                    "type": "integer",
+                                                    "example": "6"
+                                                },
+                                                "comments_count": {
+                                                    "description": "кол-во комментариев",
+                                                    "type": "integer",
+                                                    "example": null
+                                                },
+                                                "created_at": {
+                                                    "description": "дата создания",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-11-05 06:11"
+                                                },
+                                                "update_at": {
+                                                    "description": "дата обновления",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-11-05 08:22"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/posts/{post}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Просмотр",
+                "operationId": "d3910995cb542d02254c9fc6133cc10c",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "ID поста",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/resources.post.show"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Обновление",
+                "operationId": "4897f3aff4c2ef880950782e3669baf4",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "ID поста",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "title": {
+                                                "description": "Заголовок поста",
+                                                "type": "string",
+                                                "example": "My title for update"
+                                            },
+                                            "content": {
+                                                "description": "Тело поста",
+                                                "type": "string",
+                                                "example": "Some long text for update"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "id поста",
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "title": {
+                                                    "description": "Заголовок поста",
+                                                    "type": "string",
+                                                    "example": "My title"
+                                                },
+                                                "content": {
+                                                    "description": "Тело поста",
+                                                    "type": "string",
+                                                    "example": "Some long text"
+                                                },
+                                                "user_id": {
+                                                    "description": "id автора",
+                                                    "type": "integer",
+                                                    "example": "6"
+                                                },
+                                                "comments_count": {
+                                                    "description": "кол-во комментариев",
+                                                    "type": "integer",
+                                                    "example": "0"
+                                                },
+                                                "created_at": {
+                                                    "description": "дата создания",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-11-05 06:11"
+                                                },
+                                                "update_at": {
+                                                    "description": "дата обновления",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-11-05 08:22"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Удаление",
+                "operationId": "995630fb8f7510fb391745db0c073d23",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "ID поста",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "done"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "links": {
+                "title": "links",
+                "description": "Ссылки пагинации",
+                "properties": {
+                    "first": {
+                        "description": "url первой страницы",
+                        "type": "string",
+                        "example": "http://127.0.0.1/api/posts?page=1"
+                    },
+                    "last": {
+                        "description": "url последней страницы",
+                        "type": "string",
+                        "example": "http://127.0.0.1/api/posts?page=2"
+                    },
+                    "prev": {
+                        "description": "url предыдущей страницы",
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "description": "url следующей страницы",
+                        "type": "string",
+                        "example": "http://127.0.0.1/api/posts?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "meta": {
+                "title": "meta",
+                "description": "Meta информация пагинации",
+                "properties": {
+                    "current_page": {
+                        "title": "Номер текущей страницы",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "title": "От (порядковый номер сущности)",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "title": "Номер последней страницы",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "links": {
+                        "title": "Массив ссылок пагинатора",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "title": "url страницы",
+                                    "type": "string",
+                                    "example": "http://127.0.0.1/api/posts?page=1"
+                                },
+                                "label": {
+                                    "title": "title ссылки",
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "active": {
+                                    "title": "доступность ссылки",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "path": {
+                        "title": "Основной путь запроса",
+                        "type": "string",
+                        "example": "http://127.0.0.1/api/posts"
+                    },
+                    "per_page": {
+                        "title": "Кол-во выводимых сущностей",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "to": {
+                        "title": "До (порядковый номер сущности)",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total": {
+                        "title": "Всего сущностей",
+                        "type": "integer",
+                        "example": 18
+                    }
+                },
+                "type": "object"
+            },
+            "post.storeOrUpdate": {
+                "title": "postStore",
+                "required": [
+                    "title",
+                    "content"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Заголовок поста",
+                        "type": "string",
+                        "example": "My title"
+                    },
+                    "content": {
+                        "description": "Тело поста",
+                        "type": "string",
+                        "example": "Some long text"
+                    }
+                },
+                "type": "object"
+            },
+            "resources.post.comments": {
+                "title": "Post Comment",
+                "description": "Post Comment",
+                "properties": {
+                    "id": {
+                        "description": "id комментария",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "text": {
+                        "description": "Тело комментария",
+                        "type": "string",
+                        "example": "какой-то комментарий"
+                    },
+                    "user_id": {
+                        "description": "id автора",
+                        "type": "integer",
+                        "example": 6
+                    },
+                    "post_id": {
+                        "description": "id поста",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "created_at": {
+                        "description": "дата создания",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 06:11"
+                    },
+                    "update_at": {
+                        "description": "дата обновления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 08:22"
+                    }
+                },
+                "type": "object"
+            },
+            "resources.post.index": {
+                "title": "Post collection",
+                "description": "Post collection",
+                "properties": {
+                    "id": {
+                        "description": "id поста",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "description": "Заголовок поста",
+                        "type": "string",
+                        "example": "My title"
+                    },
+                    "content": {
+                        "description": "Тело поста",
+                        "type": "string",
+                        "example": "Some long text"
+                    },
+                    "user_id": {
+                        "description": "id автора",
+                        "type": "integer",
+                        "example": 6
+                    },
+                    "comments_count": {
+                        "description": "кол-во комментариев",
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "created_at": {
+                        "description": "дата создания",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 06:11"
+                    },
+                    "update_at": {
+                        "description": "дата обновления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 08:22"
+                    }
+                },
+                "type": "object"
+            },
+            "resources.post.show": {
+                "title": "Post resources",
+                "description": "Post resources",
+                "properties": {
+                    "id": {
+                        "description": "id поста",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "description": "Заголовок поста",
+                        "type": "string",
+                        "example": "My title"
+                    },
+                    "content": {
+                        "description": "Тело поста",
+                        "type": "string",
+                        "example": "Some long text"
+                    },
+                    "user_id": {
+                        "description": "id автора",
+                        "type": "integer",
+                        "example": 6
+                    },
+                    "comments_count": {
+                        "description": "кол-во комментариев",
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "comments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/resources.post.comments"
+                        }
+                    },
+                    "created_at": {
+                        "description": "дата создания",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 06:11"
+                    },
+                    "update_at": {
+                        "description": "дата обновления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-11-05 08:22"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

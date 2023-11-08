@@ -11,7 +11,29 @@ use App\Models\Post;
 class CommentController extends Controller
 {
     /**
+     * @OA\Get(
+     *   tags={"Comment"},
+     *   path="/api/posts/{post}/comments",
+     *   summary="Comment index",
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="object",
+     *       @OA\Property(
+     *         property="data",
+     *         type="array",
+     *         @OA\Items(ref="#/components/schemas/resources.post.comments"),
+     *       )
+     *     )
+     *   )
+     * )
+     *
      * Display a listing of the resource.
+     *
+     * @param Post $post
+     *
+     * @return [type]
      */
     public function index(Post $post)
     {

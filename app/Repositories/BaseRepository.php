@@ -21,4 +21,11 @@ class BaseRepository
 
         return $model;
     }
+
+    public function deleteModel($id)
+    {
+        $count = $this->model::destroy($id);
+
+        return $count;
+    }
 }
