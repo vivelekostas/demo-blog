@@ -69,7 +69,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/resources.post.comments"
+                                                "$ref": "#/components/schemas/CommentResource"
                                             }
                                         }
                                     },
@@ -77,6 +77,43 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/posts/{post}/comment": {
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Comment store",
+                "operationId": "ea0a4f7b5c4fd7686262be1e01477977",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/comment.storeOrUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -470,6 +507,20 @@
                 },
                 "type": "object"
             },
+            "comment.storeOrUpdate": {
+                "title": "commentStore",
+                "required": [
+                    "text"
+                ],
+                "properties": {
+                    "text": {
+                        "description": "текст комментария",
+                        "type": "string",
+                        "example": "Some comment"
+                    }
+                },
+                "type": "object"
+            },
             "post.storeOrUpdate": {
                 "title": "postStore",
                 "required": [
@@ -490,7 +541,7 @@
                 },
                 "type": "object"
             },
-            "resources.post.comments": {
+            "CommentResource": {
                 "title": "Post Comment",
                 "description": "Post Comment",
                 "properties": {
@@ -605,7 +656,7 @@
                     "comments": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/resources.post.comments"
+                            "$ref": "#/components/schemas/CommentResource"
                         }
                     },
                     "created_at": {

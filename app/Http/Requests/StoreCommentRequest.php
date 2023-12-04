@@ -3,7 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
+/**
+ * @OA\Schema(
+ *   schema="comment.storeOrUpdate",
+ *   title="commentStore",
+ *   required={"text"},
+ *
+ *     @OA\Property(property="text", type="string", example="Some comment", description="текст комментария")
+ * )
+ */
 class StoreCommentRequest extends FormRequest
 {
     /**
@@ -11,7 +21,18 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'user_id' => $this->user()->id,
+            'post_id' => $this->post_id,
+        ]);
     }
 
     /**
@@ -22,7 +43,9 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'text' => 'required|string',
+            'user_id' => 'required|integer',
+            'post_id' => 'required|integer',
         ];
     }
 }

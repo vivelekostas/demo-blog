@@ -9,7 +9,7 @@ class CommentResource extends JsonResource
 {
     /**
      * @OA\Schema(
-     *   schema="resources.post.comments",
+     *   schema="CommentResource",
      *   title="Post Comment",
      *   description="Post Comment",
      *     @OA\Property(property="id", type="integer", example="1", description="id комментария"),

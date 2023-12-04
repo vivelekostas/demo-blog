@@ -69,4 +69,4 @@ Route::apiResource('/posts', PostController::class)->middleware('auth');
 /**
  * routes of comments =====================================================================================
  */
-Route::apiResource('/posts/{post}/comments', CommentController::class);
+Route::apiResource('/posts/{post}/comments', CommentController::class)->middleware('auth');
