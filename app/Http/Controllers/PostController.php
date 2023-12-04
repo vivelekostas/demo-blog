@@ -9,6 +9,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -43,7 +44,13 @@ class PostController extends Controller
      */
     public function index(): PostCollection
     {
-        return new PostCollection(Post::paginate(10));
+        $page = request()->page;
+
+        $posts = Cache::tags(['posts_index'])->rememberForever('posts:all' . $page, function () {
+            return Post::paginate(10);
+        });
+
+        return new PostCollection($posts);
     }
 
     /**
@@ -116,8 +123,10 @@ class PostController extends Controller
      *
      * @return PostResource
      */
-    public function show(Post $post): PostResource
+    public function show($id): PostResource
     {
+        $post = Cache::get('posts:' . $id);
+
         return new PostResource($post);
     }
 

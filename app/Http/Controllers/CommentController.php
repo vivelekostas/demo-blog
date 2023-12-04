@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentCollection;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Repositories\CommentRepository;
 
 class CommentController extends Controller
 {
+    public function __construct(public CommentRepository $commentRepository)
+    {
+        //
+    }
+
     /**
      * @OA\Get(
      *   tags={"Comment"},
@@ -23,7 +31,7 @@ class CommentController extends Controller
      *       @OA\Property(
      *         property="data",
      *         type="array",
-     *         @OA\Items(ref="#/components/schemas/resources.post.comments"),
+     *         @OA\Items(ref="#/components/schemas/CommentResource"),
      *       )
      *     )
      *   )
@@ -41,11 +49,32 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *   tags={"Comment"},
+     *   path="/api/posts/{post}/comment",
+     *   summary="Comment store",
+     *   @OA\RequestBody(
+     *     required=true,
+     *       @OA\JsonContent(ref="#/components/schemas/comment.storeOrUpdate")
+     *   ),
+     *   @OA\Response(
+     *     response=201,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/CommentResource")
+     *   ),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     *
+     * @param StoreCommentRequest $request
+     *
+     * @return [type]
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+        $comment = $this->commentRepository->createModel($request->validated());
+
+        return new CommentResource($comment);
     }
 
     /**
