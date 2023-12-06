@@ -10,7 +10,7 @@ print_first:
   only:
     - development
   script:
-    - echo "Salut, mon cœur! ololo!"
+    - echo "Salut, mon cœur! ololo! два оригина у меня !!!!"
 
 print_second:
   stage: second
