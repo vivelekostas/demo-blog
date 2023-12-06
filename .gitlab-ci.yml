@@ -1,0 +1,31 @@
+stages:
+  - first
+  - second
+  - third
+
+print_first:
+  stage: first
+  tags:
+    - dev
+  only:
+    - development
+  script:
+    - echo "Salut, mon cœur!"
+
+print_second:
+  stage: second
+  tags:
+    - dev
+  only:
+    - development
+  script:
+    - echo "Salut, mon ami!"
+
+print_third:
+  stage: third
+  tags:
+    - dev
+  only:
+    - development
+  script:
+    - echo "Salut, mon frere!"
